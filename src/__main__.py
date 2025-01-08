@@ -4,7 +4,7 @@ from src.core import run_uvicorn_server
 
 def main() -> None:
     app = init_app()
-    
+
     run_uvicorn_server(app)
 
 
