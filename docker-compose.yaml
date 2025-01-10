@@ -14,6 +14,8 @@ services:
       - app-network
     depends_on:
       - db-service
+    env_file:
+      - ./.env
   
   db-service:
     image: postgres:latest
@@ -31,6 +33,22 @@ services:
     ports:
       - 5432:5432
 
+  db-migrations-service:
+    image: backend-service
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: db-migrations-service
+    working_dir: /usr/backend_app/
+    volumes:
+      - ./src/database/migrations/versions:/usr/backend_app/src/database/migrations/versions
+    depends_on:
+      - db-service
+    networks:
+      - app-network
+    command: bash -c 'alembic upgrade head'
+    env_file:
+      - ./.env
 
 volumes:
   postgres_data:

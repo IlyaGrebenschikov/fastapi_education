@@ -18,4 +18,4 @@ RUN poetry config virtualenvs.create false && \
     poetry install --no-root --no-interaction --no-ansi
 
 COPY src ./src
-COPY .env ./
+COPY alembic.ini ./
