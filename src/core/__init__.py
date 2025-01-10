@@ -1,9 +1,9 @@
 from src.core.server_uvicorn import run_uvicorn_server
-from src.core.settings import database_settings, DatabaseSettings
+from src.core.settings import Settings, load_settings
 
 
 __all__ = (
     'run_uvicorn_server',
-    'database_settings',
-    'DatabaseSettings'
+    'load_settings',
+    'Settings',
 )

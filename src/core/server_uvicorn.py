@@ -1,6 +1,8 @@
 import uvicorn
 from fastapi import FastAPI
 
+from src.core.settings import UvicornServerSettings
 
-def run_uvicorn_server(app: FastAPI, host: str = '0.0.0.0', port: int = 8080):
-    uvicorn.run(app, host=host, port=port)
+
+def run_uvicorn_server(app: FastAPI, settings: UvicornServerSettings):
+    uvicorn.run(app, host=settings.HOST, port=settings.PORT)

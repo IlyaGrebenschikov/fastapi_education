@@ -1,3 +1,4 @@
+from typing import Optional
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from sqlalchemy import URL
 
@@ -16,7 +17,7 @@ class DatabaseSettings(BaseSettings):
     DB: str
 
     @property
-    def get_url_obj(self) -> URL:
+    def url_obj(self) -> URL:
         return URL.create(
             'postgresql+asyncpg',
             username=self.USER,
@@ -27,7 +28,7 @@ class DatabaseSettings(BaseSettings):
         )
 
     @property
-    def get_url_str(self) -> str:
+    def url_str(self) -> str:
         return (
             f'postgresql+asyncpg://'
             f'{self.USER}:'
@@ -37,6 +38,30 @@ class DatabaseSettings(BaseSettings):
             f'{self.DB}'
         )
         
-        
-def database_settings() -> DatabaseSettings:
-    return DatabaseSettings()
+
+class UvicornServerSettings:
+    model_config = SettingsConfigDict(
+        env_file='.env',
+        env_file_encoding='utf-8',
+        env_prefix='UVICORN_SERVER_',
+        extra='ignore'
+    )
+    
+    HOST: Optional[str] = '0.0.0.0'
+    PORT: Optional[int] = 8080
+
+
+class Settings(BaseSettings):
+    database: DatabaseSettings
+    uvicorn_server: UvicornServerSettings       
+
+
+def load_settings(
+    database: Optional[DatabaseSettings] = None,
+    uvicorn_server: Optional[UvicornServerSettings] = None,
+    ) -> Settings:
+    return Settings(
+        database=database or DatabaseSettings(),
+        uvicorn_server=uvicorn_server or UvicornServerSettings()
+    )
+
