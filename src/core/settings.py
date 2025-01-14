@@ -39,7 +39,7 @@ class DatabaseSettings(BaseSettings):
         )
         
 
-class UvicornServerSettings:
+class UvicornServerSettings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file='.env',
         env_file_encoding='utf-8',
@@ -49,19 +49,38 @@ class UvicornServerSettings:
     
     HOST: Optional[str] = '0.0.0.0'
     PORT: Optional[int] = 8080
+    
+
+class AppSettings(BaseSettings):
+    model_config = SettingsConfigDict(
+        env_file='.env',
+        env_file_encoding='utf-8',
+        env_prefix='APP_',
+        extra='ignore',
+        validate_default=False
+    )
+    
+    TITLE: Optional[str] = 'FastApi'
+    VERSION: Optional[str] = '0.1.0'
+    DOCS_URL: Optional[str] = '/docs'
+    REDOC_URL: Optional[str] = '/redoc'
 
 
 class Settings(BaseSettings):
+    app: AppSettings
     database: DatabaseSettings
     uvicorn_server: UvicornServerSettings       
 
 
 def load_settings(
+    app: Optional[AppSettings] = None,
     database: Optional[DatabaseSettings] = None,
     uvicorn_server: Optional[UvicornServerSettings] = None,
     ) -> Settings:
     return Settings(
+        app=app or AppSettings(),
         database=database or DatabaseSettings(),
         uvicorn_server=uvicorn_server or UvicornServerSettings()
     )
 
+print(AppSettings().TITLE)
