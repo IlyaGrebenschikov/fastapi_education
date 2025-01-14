@@ -1,6 +1,9 @@
-from typing import Any
+from typing import Any, TypeVar
 
 from sqlalchemy.orm import DeclarativeBase
+
+
+ModelType = TypeVar("ModelType", bound="Base")
 
 
 class Base(DeclarativeBase):

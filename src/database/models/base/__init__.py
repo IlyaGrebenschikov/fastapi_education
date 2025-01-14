@@ -1,6 +1,7 @@
-from src.database.models.base.core import Base
+from src.database.models.base.core import Base, ModelType
 
 
 __all__ = (
-    'Base'
+    'Base',
+    'ModelType'
 )
