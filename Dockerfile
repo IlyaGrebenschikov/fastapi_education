@@ -19,3 +19,4 @@ RUN poetry config virtualenvs.create false && \
 
 COPY src ./src
 COPY alembic.ini ./
+COPY logs ./

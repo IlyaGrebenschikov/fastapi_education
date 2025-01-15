@@ -6,6 +6,7 @@ services:
     container_name: backend-service
     volumes:
       - ./src/:/usr/backend_app/src
+      - ./logs/:/usr/backend_app/logs
     ports:
       - "8080:8080"
     working_dir: /usr/backend_app/
@@ -42,6 +43,7 @@ services:
     working_dir: /usr/backend_app/
     volumes:
       - ./src/database/migrations/versions:/usr/backend_app/src/database/migrations/versions
+      - ./logs/:/usr/backend_app/logs
     depends_on:
       - db-service
     networks:
@@ -49,6 +51,7 @@ services:
     command: bash -c 'alembic upgrade head'
     env_file:
       - ./.env
+
 
 volumes:
   postgres_data:

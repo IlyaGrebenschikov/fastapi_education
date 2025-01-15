@@ -1,7 +1,13 @@
+import logging
+from pathlib import Path
 from typing import Optional
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from sqlalchemy import URL
 
+
+def get_root_dir_path() -> Path:
+    return Path(__file__).resolve().parent.parent.parent
+    
 
 class DatabaseSettings(BaseSettings):
     model_config = SettingsConfigDict(
@@ -63,6 +69,13 @@ class AppSettings(BaseSettings):
     VERSION: Optional[str] = '0.1.0'
     DOCS_URL: Optional[str] = '/docs'
     REDOC_URL: Optional[str] = '/redoc'
+    
+
+class LoggerSettings:
+    name = 'base'
+    level = logging.DEBUG
+    dir_path = (get_root_dir_path() / 'logs')
+    formater = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s\n')
 
 
 class Settings(BaseSettings):
@@ -81,3 +94,7 @@ def load_settings(
         database=database or DatabaseSettings(),
         uvicorn_server=uvicorn_server or UvicornServerSettings()
     )
+
+
+def load_logger_settings() -> LoggerSettings:
+    return LoggerSettings()
