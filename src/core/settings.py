@@ -57,7 +57,6 @@ class AppSettings(BaseSettings):
         env_file_encoding='utf-8',
         env_prefix='APP_',
         extra='ignore',
-        validate_default=False
     )
     
     TITLE: Optional[str] = 'FastApi'
@@ -82,5 +81,3 @@ def load_settings(
         database=database or DatabaseSettings(),
         uvicorn_server=uvicorn_server or UvicornServerSettings()
     )
-
-print(AppSettings().TITLE)
