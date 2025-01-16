@@ -21,7 +21,7 @@ from sqlalchemy import (
 )
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.common.interfaces.crud import AbstractCRUDRepository
+from src.common.interfaces import AbstractCRUDRepository
 from src.database.models.base import ModelType
 
 
