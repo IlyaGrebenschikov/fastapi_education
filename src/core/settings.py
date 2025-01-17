@@ -70,6 +70,13 @@ class AppSettings(BaseSettings):
     DOCS_URL: Optional[str] = '/docs'
     REDOC_URL: Optional[str] = '/redoc'
     
+    
+class JWTSettings:
+    private_key: str = (get_root_dir_path() / ".certs" / "jwt-private.pem").read_text()
+    public_key: str = (get_root_dir_path() / ".certs" / "jwt-public.pem").read_text()
+    algorithm: str = 'RS256'
+    jwt_expiration: int = 30
+    
 
 class LoggerSettings:
     name = 'base'
@@ -82,17 +89,20 @@ class Settings(BaseSettings):
     app: AppSettings
     database: DatabaseSettings
     uvicorn_server: UvicornServerSettings       
+    jwt: JWTSettings
 
 
 def load_settings(
     app: Optional[AppSettings] = None,
     database: Optional[DatabaseSettings] = None,
     uvicorn_server: Optional[UvicornServerSettings] = None,
+    jwt: Optional[JWTSettings] = None,
     ) -> Settings:
     return Settings(
         app=app or AppSettings(),
         database=database or DatabaseSettings(),
-        uvicorn_server=uvicorn_server or UvicornServerSettings()
+        uvicorn_server=uvicorn_server or UvicornServerSettings(),
+        jwt=jwt or JWTSettings(),
     )
 
 
