@@ -7,6 +7,7 @@ services:
     volumes:
       - ./src/:/usr/backend_app/src
       - ./logs/:/usr/backend_app/logs
+      - ./.certs/:/usr/backend_app/.certs
     ports:
       - "8080:8080"
     working_dir: /usr/backend_app/
@@ -44,6 +45,7 @@ services:
     volumes:
       - ./src/database/migrations/versions:/usr/backend_app/src/database/migrations/versions
       - ./logs/:/usr/backend_app/logs
+      - ./.certs/:/usr/backend_app/.certs
     depends_on:
       - db-service
     networks:
