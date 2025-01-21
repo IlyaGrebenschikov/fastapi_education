@@ -1,4 +1,8 @@
-from pydantic import EmailStr, BaseModel, field_validator
+from datetime import datetime
+from typing import Optional
+from typing_extensions import Self
+
+from pydantic import EmailStr, BaseModel, field_validator, model_validator
 
 
 class UserSchema(BaseModel):
@@ -21,3 +25,28 @@ class UserSchema(BaseModel):
             raise ValueError("Password must have at least one digit")
 
         return value
+
+
+class UserResponseSchema(BaseModel):
+    login: str
+    email: EmailStr
+    
+    
+class UserInDBSchema(UserSchema):
+    id: int
+    is_superuser: bool
+    created_at: datetime
+    updated_at: datetime
+
+
+class UpdateUserQuerySchema(UserSchema):
+    login: Optional[str] = None
+    email: Optional[EmailStr] = None
+    password: Optional[str] = None
+
+    @model_validator(mode='after')
+    def check_at_least_one_field(self) -> Self:
+        if not any(value is not None for value in (self.login, self.email, self.password)):
+            raise ValueError('At least one field must be provided')
+
+        return self

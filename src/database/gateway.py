@@ -6,8 +6,6 @@ from src.database.repositories import UserRepository, RepositoryType
 
 
 class DBGateway(BaseGateway):
-    __slots__ = ("manager",)
-
     def __init__(self, manager: TransactionManager) -> None:
         self.manager = manager
         super().__init__(manager)
