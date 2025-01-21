@@ -8,7 +8,7 @@ from src.api.common.docs import ConflictError
 from src.api.v1.handlers.user import CreateUserHandler
 
 
-user_router = APIRouter(prefix='/user', tags=['user'])
+user_router = APIRouter(prefix='/api/v1/user', tags=['user'])
 
 
 @user_router.post(

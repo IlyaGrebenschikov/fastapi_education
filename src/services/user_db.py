@@ -1,3 +1,5 @@
+from typing import Any, overload
+
 from sqlalchemy.exc import IntegrityError
 
 from src.core import log
@@ -37,15 +39,21 @@ class UserDBService:
         
         return from_model_to_dto(result, UserResponseSchema)
 
+    @overload
     async def get(self, user_id: int) -> UserInDBSchema:
-        result = await self._repository.get_one(user_id=user_id)
+        pass
+    
+    @overload
+    async def get(self, login: str) -> UserInDBSchema:
+        pass
+    
+    async def get(self, **kwargs: Any) -> UserInDBSchema:
+        result = await self._repository.get_one(**kwargs)
 
         if not result:
             raise NotFoundException('User not found')
 
-        converted_result = from_model_to_dto(result, UserInDBSchema)
-
-        return converted_result
+        return from_model_to_dto(result, UserInDBSchema)
 
     async def delete(self, user_id: int) -> UserResponseSchema:
         result = await self._repository.delete(user_id)
